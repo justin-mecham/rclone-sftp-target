@@ -1,0 +1,23 @@
+version: '2'
+services:
+  sshd:
+    container_name: sshd
+    image: rclone-test
+    restart: unless-stopped
+    ports:
+      - "2202:22"
+    volumes:
+      - "./rclone.conf:/rclone.conf"
+      - "./users.conf:/etc/sftp/users.conf:ro"
+      - "./startup.sh:/startup.sh"
+      - "./sshd_config:/etc/ssh/sshd_config"
+      - "./pam.d.sshd:/etc/pam.d/sshd"
+#      - "./ssh_host_ed25519_key.pub:/etc/ssh/ssh_host_ed25519_key.pub"
+#      - "./ssh_host_ed25519_key:/etc/ssh/ssh_host_ed25519_key"
+#      - "./ssh_host_rsa_key:/etc/ssh/ssh_host_rsa_key"
+#      - "./ssh_host_rsa_key.pub:/etc/ssh/ssh_host_rsa_key.pub"
+    devices:
+      - "/dev/fuse"
+    privileged: true
+    cap_add:
+      - SYS_ADMIN
